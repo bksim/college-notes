@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="well">
+                        <table>
+                        <tr>
+                        <td><a id="upvote" href="{% url notes.views.upvote post.pk %}">
+                        
+                                {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
+
+                                <font color="red">^&nbsp;</font>{% endif %} 
+                                
+                                
+                                
+                             </a>
+                        </td>
+                        <td>
+                                <table>
+                                <tr><td>
+                                    <a href="{{post.link}}">{{post.title}}</a>
+                                </td></tr>
+                                <tr><td>
+                                    {{post.description}}
+                                </td></tr>
+                                <tr><td>
+                                <small>by 
+                                <a href="/users/{{post.user}}/">{{post.user}}</a>
+                                
+                                
+                                {{post.created|naturaltime}} | 
+                                <a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
+                                
+                                {% if post.num_comments == 1 %}
+                                Comment
+                                {% else %}
+                                Comments
+                                {%endif%}
+                                
+                                
+                                </a> | {{post.rating}} points</small>
+                                
+                                </td></tr>
+                                </table>
+                        </td>
+                        </tr>
+                        </table>
+</div>                        
+                <hr>
+
+{% for comment in comments %}
+    <div class="comment">
+        <div class="time"><b>{{ comment.author }}</b> | {{ comment.created }}</div>
+        <div class="body">{{ comment.body|linebreaks }}</div>
+    </div>
+{% endfor %}
+
+<div class="well span3">
+<!-- Comment form  -->
+<form action="{% url notes.views.add_comment post.id %}" method="POST">{% csrf_token %}
+    <div id="cform">
+        <p>{{ form.body|linebreaks }}</p>
+    </div>
+    <div id="submit"><input type="submit" value="add comment"></div>
+</form>
+</div>
+      {% endblock %}
+
+

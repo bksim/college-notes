@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script>
+
+ </script>
+ 
+<div class="well span8">
+                <dl>
+                    {% for post in posts %}
+                        <table>
+                        <tr>
+                        <td><a id="upvote" href="{% url notes.views.upvote post.pk %}">
+                        
+                                {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
+
+                                <font color="red">&nbsp;&nbsp;</font>{% endif %} 
+                                
+                                
+                                
+                             </a>
+                        </td>
+                        <td>
+                                <table>
+                                <tr><td>
+                                    <a href="{{post.link}}">{{post.title}}</a>
+                                </td></tr>
+                                <tr><td>
+                                    {{post.description}}
+                                </td></tr>
+                                <tr><td>
+                                <small>by 
+                                <a href="/users/{{post.user}}/">{{post.user}}</a>
+                                
+                                
+                                {{post.created|naturaltime}} | 
+                                <a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
+                                
+                                {% if post.num_comments == 1 %}
+                                Comment
+                                {% else %}
+                                Comments
+                                {%endif%}
+                                
+                                
+                                </a> | {{post.rating}} points</small>
+                                
+                                </td></tr>
+                                </table>
+                        </td>
+                        </tr>
+                        </table>
+                        <br>
+                    {% endfor %}
+                </dl>
+</div>
+      {% endblock %}
+
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="HandheldFriendly" content="true" />
+        <title>Noteshare</title>
+        
+       
+     <link href="/static/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-bottom: 40px;
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="/static/bootstrap-responsive.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+
+    <!-- The top navigation menu -->
+    
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">notehub</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="/submit/">submit</a></li>
+              <li><a href="/new/">new</a></li>
+              <li><a href="/best/">best</a></li>
+              {% if not is_authenticated %}<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
+                {% else %}<li class="pull-right"><a href="/logout/">logout</a></li>{% endif %}
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+                
+                
+                
+           
+   <!-- End top navigation menu-->
+   <div class="container-fluid">
+
+      {% block content %}{% endblock %}
+
+    </div> <!-- /container -->
+    <div class="container">
+       
+            <footer>
+        <p>&copy; Ayzaan Wahid</p>
+      </footer>
+    </div>
+
+
+    <!-- Footer -->
+
+    
+
+  </body>
+
+</html>
+
+
+

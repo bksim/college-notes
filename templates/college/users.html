@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="well span8">
+<ul class="nav nav-tabs">
+  {% if active == 'submitted' %}
+  <li class="active">
+    <a href="{% url notes.views.users page_user %}">Submitted</a>
+  </li>
+  <li><a href="{% url notes.views.liked page_user %}">Liked</a></li>
+  
+  
+  {% elif active == 'liked' %}
+    <li>
+    <a href="{% url notes.views.users page_user %}">Submitted</a>
+  </li>
+  <li class="active"><a href="{% url notes.views.liked page_user %}">Liked</a></li>
+  {% endif %}
+  
+</ul>
+                <dl>
+                    {% for post in posts %}
+                        <table>
+                        <tr>
+                        <td>
+                        <td>
+                                <table>
+                                <tr><td>
+                                    <a href="{{post.link}}">{{post.title}}</a>
+                                </td></tr>
+                                <tr><td>
+                                    {{post.description}}
+                                </td></tr>
+                                <tr><td>
+                                <small>by {{post.user}} {{post.created|naturaltime}} | 
+                                <a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
+                                
+                                {% if post.num_comments == 1 %}
+                                Comment
+                                {% else %}
+                                Comments
+                                {%endif%}
+                                
+                                
+                                </a> | {{post.rating}} points</small>
+                                
+                                </td></tr>
+                                </table>
+                        </td>
+                        </tr>
+                        </table>
+                        <br>
+                    {% endfor %}
+                </dl>
+</div>
+      {% endblock %}
+
+
