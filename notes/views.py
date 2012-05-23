@@ -29,7 +29,7 @@ def index(request):
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
     #print(request.user.username)
-    print(User.objects.filter(username=request.user.username))[0])
+    print(   User.objects.filter(username=request.user.username)[0])
     return render_to_response("college/index.html", dict(posts=posts, 
         user=UserProfile.objects.get_or_create(user=User.objects.filter(username=request.user.username))[0], 
         path=request.path,
