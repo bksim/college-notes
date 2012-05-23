@@ -29,9 +29,9 @@ def index(request):
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
     #print(request.user.username)
-    print(   User.objects.filter(username=request.user.username))
+    print(   type(User.objects.filter(username=request.user.username)))
     return render_to_response("college/index.html", dict(posts=posts, 
-        user=UserProfile.objects.get_or_create(user=User.objects.filter(username=request.user.username))[0], 
+        user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
 
@@ -51,7 +51,7 @@ def post(request, pk):
         d = dict(post=post, comments=comments, form=CommentForm(), user='Anonymous', is_authenticated=request.user.is_authenticated())
     else:
         d = dict(post=post, comments=comments, form=CommentForm(), 
-        user=UserProfile.objects.get_or_create(user=User.objects.filter(username=request.user.username))[0],
+        user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0],
         is_authenticated=request.user.is_authenticated())
          
         
