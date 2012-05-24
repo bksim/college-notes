@@ -8,7 +8,7 @@
 // kind is there in case we ever want to implement downvoting?
 	function upvote(kind) {
 		$.getJSON("/upvote/" + String(object.pk) + "/", {vote: kind }, function(json){
-		alert("does this work?: " + json['success']);
+		//alert("does this work?: " + json['success']);
 		});
 	}
 	function addClickHandlers() {
