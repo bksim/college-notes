@@ -6,8 +6,8 @@
 <script>
 // this might be messed up sorry but hopefully jquery works for upvoting -bks
 // kind is there in case we ever want to implement downvoting?
-	function upvote(kind) {
-		$.getJSON("/upvote/", { pk:{{ object.pk }}, vote: kind }, function(json){
+	function upvote(pk, kind) {
+		$.getJSON("/upvote/", { pk:pk, vote: kind }, function(json){
 			alert("Was successful?: " + json['success']);
 		});
 	}
@@ -23,7 +23,7 @@
                     {% for post in posts %}
                         <table>
                         <tr>
-                        <td><a href="#" id="upvote">
+                        <td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 
