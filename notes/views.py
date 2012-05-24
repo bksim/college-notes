@@ -151,6 +151,7 @@ def liked(request, username):
 
 		
 #the method below may be wrong so feel free to edit if it doesn't work -bks
+#just kidding, i think it works -bks
 def best(request):
 	# framework is copied from index, so this may be the source of any errors -bks
     posts = Post.objects.order_by('-rating')
@@ -168,3 +169,21 @@ def best(request):
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
+		
+def new(request):
+# framework is copied from index, so this may be the source of any errors -bks
+    posts = Post.objects.order_by('-created')
+    #print(posts[0].created.naturaltime())
+    #print(request.user.username) <- is this just a debug?
+    #print(posts[0] not in request.user.likes.all())
+    if request.user.username == '':
+        return render_to_response("college/index.html", dict(posts=posts, 
+        user='Anonymous', 
+        path=request.path,
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+    #print(request.user.username)
+    print(   type(User.objects.filter(username=request.user.username)))
+    return render_to_response("college/index.html", dict(posts=posts, 
+        user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
+        path=request.path,
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
