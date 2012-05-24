@@ -122,7 +122,7 @@ def add_comment(request, pk):
 @login_required(login_url='/accounts/login') 
 # edited this for jquery -bks
 def upvote(request, pk):
-	results = {'success':True} #default json response
+    results = {'success':True} #default json response
 	
     p = Post.objects.get(pk=pk)
     user = UserProfile.objects.get_or_create(user=request.user)[0]
@@ -139,8 +139,9 @@ def upvote(request, pk):
 	
 	#test
 	json = simplejson.dumps(results)
+	#return HttpResponseRedirect(reverse('notes.views.index'))
 	return HttpResponse(json, mimetype='application/json')
-    #return HttpResponseRedirect(reverse('notes.views.index'))
+    
     
     
 def users(request, username):
