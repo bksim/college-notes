@@ -15,6 +15,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.utils import simplejson
 
 from notes.models import *
 
@@ -119,7 +120,10 @@ def add_comment(request, pk):
     return HttpResponseRedirect(reverse("notes.views.post", args=[pk]))
 
 @login_required(login_url='/accounts/login') 
+# edited this for jquery -bks
 def upvote(request, pk):
+	results = {'success':True} #default json response
+	
     p = Post.objects.get(pk=pk)
     user = UserProfile.objects.get_or_create(user=request.user)[0]
     
@@ -132,7 +136,11 @@ def upvote(request, pk):
     d = dict(post=p, user=request.user, is_authenticated=request.user.is_authenticated() )
     d.update(csrf(request))
     #print(property)
-    return HttpResponseRedirect(reverse('notes.views.index'))
+	
+	#test
+	json = simplejson.dumps(results)
+	return HttpResponse(json, mimetype='application/json')
+    #return HttpResponseRedirect(reverse('notes.views.index'))
     
     
 def users(request, username):
