@@ -23,13 +23,13 @@
                     {% for post in posts %}
                         <table>
                         <tr>
-                        <td><span id="upvote">
+                        <td><a href="#" id="upvote">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 
                                 <font color="red">&nbsp;&nbsp;</font>{% endif %} 
 								
-                            </span>
+                            </a>
                         </td>
                         <td>
                                 <table>
