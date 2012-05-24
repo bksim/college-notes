@@ -62,10 +62,10 @@ def post(request, pk):
 @login_required(login_url='/accounts/login') 
 def submit(request):
     form = PostForm()
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
             print('try')
-            post = request.POST
+            post = request.GET
             if post['title'] == '' or post['description'] == '' or post['link'] == '':
                 return render_to_response('college/submit.html', {
                 'form': form,
@@ -113,7 +113,7 @@ def log_out(request):
     
     
 def add_comment(request, pk):
-    p = request.POST
+    p = request.GET
     if p.has_key("body") and p["body"]:
         comment = Comment(post=Post.objects.get(pk=pk), author = request.user, body=p["body"])
         comment.save()
@@ -124,11 +124,11 @@ def add_comment(request, pk):
 def upvote(request):
     results = {'success':False} #default json response
 	
-    if request.method == u'POST':
-        POST = request.POST
-        if POST.has_key(u'pk') and POST.has_key(u'vote'):
-            pk = int(POST[u'pk'])
-            vote = POST[u'vote']
+    if request.method == u'GET':
+        GET = request.GET
+        if GET.has_key(u'pk') and GET.has_key(u'vote'):
+            pk = int(GET[u'pk'])
+            vote = GET[u'vote']
             p = Post.objects.get(pk=pk)
             if vote == u"up":
                 user = UserProfile.objects.get_or_create(user=request.user)[0]
