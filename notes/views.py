@@ -136,11 +136,11 @@ def upvote(request, pk):
     d = dict(post=p, user=request.user, is_authenticated=request.user.is_authenticated() )
     d.update(csrf(request))
     #print(property)
-	
-	#test
-	json = simplejson.dumps(results)
-	#return HttpResponseRedirect(reverse('notes.views.index'))
-	return HttpResponse(json, mimetype='application/json')
+    
+    #test
+    json = simplejson.dumps(results)
+    #return HttpResponseRedirect(reverse('notes.views.index'))
+    return HttpResponse(json, mimetype='application/json')
     
     
     
