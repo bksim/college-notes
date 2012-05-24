@@ -153,9 +153,9 @@ def liked(request, username):
 #the method below may be wrong so feel free to edit if it doesn't work -bks
 def best(request):
 	# framework is copied from index, so this may be the source of any errors -bks
-    posts = Post.objects.all()
+    posts = Post.objects.order_by('-rating')
     #print(posts[0].created.naturaltime())
-    #print(request.user.username)
+    #print(request.user.username) <- is this just a debug?
     #print(posts[0] not in request.user.likes.all())
     if request.user.username == '':
         return render_to_response("college/index.html", dict(posts=posts, 
