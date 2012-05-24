@@ -9,6 +9,7 @@
 	function upvote(pk, kind) {
 		$.getJSON("/upvote/", { pk:pk, vote: kind }, function(json){
 			alert("Was successful?: " + json['success']);
+			
 		});
 	}
 	function addClickHandlers() {

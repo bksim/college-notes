@@ -122,7 +122,7 @@ def add_comment(request, pk):
 @login_required(login_url='/accounts/login') 
 # edited this for jquery -bks
 def upvote(request):
-    results = {'success':False} #default json response
+    results = {'success':False, 'points': 0} #default json response
 	
     if request.method == u'GET':
         GET = request.GET
@@ -141,7 +141,7 @@ def upvote(request):
                 d = dict(post=p, user=request.user, is_authenticated=request.user.is_authenticated() )
                 d.update(csrf(request))
             #elif vote == u"down":
-            results = {'success':True}
+            results = {'success':True, 'points':p.rating}
     json = simplejson.dumps(results)
     #return HttpResponseRedirect(reverse('notes.views.index'))
     return HttpResponse(json, mimetype='application/json')
