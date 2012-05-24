@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     url(r"^users/(?P<username>[\w-]+)/$", "notes.views.users"),
     url(r"^users/(?P<username>[\w-]+)/submitted/$", "notes.views.users"),
     url(r"^users/(?P<username>[\w-]+)/liked/$", "notes.views.liked"),
+	url(r'^best/$', 'notes.views.best'),
+	
     # url(r'^mysite/', include('mysite.foo.urls')),
 	#url(r'^buses/$', 'buses.views.index'),
     # Uncomment the admin/doc line below to enable admin documentation:
