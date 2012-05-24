@@ -7,7 +7,9 @@
 // this might be messed up sorry but hopefully jquery works for upvoting -bks
 // kind is there in case we ever want to implement downvoting?
 	function upvote(kind) {
-		$.getJSON("/upvote/" + String(object.pk) + "/", {vote: kind }, function(json){});
+		$.getJSON("/upvote/" + String(object.pk) + "/", {vote: kind }, function(json){
+		alert("does this work?: " + json['success']);
+		});
 	}
 	function addClickHandlers() {
 		$("#upvote").click( function() { upvote("up") });
@@ -22,7 +24,7 @@
                     {% for post in posts %}
                         <table>
                         <tr>
-                        <td><a id="upvote" href="{% url notes.views.upvote post.pk %}">
+                        <td><span id="upvote">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 
@@ -30,7 +32,7 @@
                                 
                                 
                                 
-                             </a>
+                             </span>
                         </td>
                         <td>
                                 <table>
