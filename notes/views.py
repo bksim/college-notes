@@ -121,28 +121,31 @@ def add_comment(request, pk):
 
 @login_required(login_url='/accounts/login') 
 # edited this for jquery -bks
-def upvote(request, pk):
-    results = {'success':True} #default json response
+def upvote(request):
+    results = {'success':False} #default json response
 	
-    p = Post.objects.get(pk=pk)
-    user = UserProfile.objects.get_or_create(user=request.user)[0]
-    
-    if p not in user.likes.all():
-        p.rating += 1
-    else:
-        print('already voted')
-    p.save()
-    user.likes.add(p)
-    d = dict(post=p, user=request.user, is_authenticated=request.user.is_authenticated() )
-    d.update(csrf(request))
-    #print(property)
-    
-    #test
+    if request.method == u'POST':
+        POST = request.POST
+        if POST.has_key(u'pk') and POST.has_key(u'vote'):
+            pk = int(POST[u'pk'])
+            vote = POST[u'vote']
+            p = Post.objects.get(pk=pk)
+            if vote == u"up":
+                user = UserProfile.objects.get_or_create(user=request.user)[0]
+                if p not in user.likes.all():
+                    p.rating += 1
+                else:
+                    print('already voted')
+                p.save()
+                user.likes.add(p)
+                d = dict(post=p, user=request.user, is_authenticated=request.user.is_authenticated() )
+                d.update(csrf(request))
+            #elif vote == u"down":
+            results = {'success':True}
     json = simplejson.dumps(results)
     #return HttpResponseRedirect(reverse('notes.views.index'))
     return HttpResponse(json, mimetype='application/json')
-    
-    
+       
     
 def users(request, username):
     posts = Post.objects.filter(user=User.objects.filter(username=username))
