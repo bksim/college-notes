@@ -7,9 +7,7 @@
 // this might be messed up sorry but hopefully jquery works for upvoting -bks
 // kind is there in case we ever want to implement downvoting?
 	function upvote(kind) {
-		$.getJSON("/upvote/" + String(object.pk) + "/", {vote: kind }, function(json){
-		//alert("does this work?: " + json['success']);
-		});
+		$.getJSON("/upvote/" + String(object.pk) + "/", {vote: kind }, function(json){});
 	}
 	function addClickHandlers() {
 		$("#upvote").click( function() { upvote("up") });
