@@ -9,7 +9,7 @@
 	function upvote(pk, kind) {
 		$.getJSON("/upvote/", { pk:pk, vote: kind }, function(json){
 			alert("Was successful?: " + json['success']);
-			
+			$("#ratingDiv").update(String(json['points']) + " points");
 		});
 	}
 	function addClickHandlers() {
@@ -55,7 +55,7 @@
                                 {%endif%}
                                 
                                 
-                                </a> | {{post.rating}} points</small>
+                                </a> | <div id="ratingDiv">{{post.rating}} points</div></small>
                                 
                                 </td></tr>
                                 </table>
