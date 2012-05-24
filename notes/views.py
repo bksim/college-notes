@@ -139,8 +139,8 @@ def upvote(request, pk):
     
     #test
     json = simplejson.dumps(results)
-    #return HttpResponseRedirect(reverse('notes.views.index'))
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponseRedirect(reverse('notes.views.index'))
+    #return HttpResponse(json, mimetype='application/json')
     
     
     
