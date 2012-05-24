@@ -7,7 +7,7 @@
 // this might be messed up sorry but hopefully jquery works for upvoting -bks
 // kind is there in case we ever want to implement downvoting?
 	function upvote(kind) {
-		$.getJSON("/upvote/", { pk:{{ object.pk }}, vote: kind }, function(json){
+		$.getJSON("/upvote/", { pk:{{ post.pk }}, vote: kind }, function(json){
 		alert("DOES THIS WORK!?: " + json['success']);
 		});
 	}
