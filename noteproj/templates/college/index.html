@@ -10,7 +10,7 @@
 		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
 		function(json){
 			alert("Was successful?: " + json['success']);
-			$("#ratingDiv").text(String(json['points']) + " points");
+			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
 			alert("successful again: " + $("#ratingDiv-" + String(pk)).text());
 		});
 	}
