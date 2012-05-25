@@ -45,8 +45,14 @@
                                 </a> | {{post.rating}} points</small>
                                 
                                 </td></tr>
+								
+								<tr>
+                                   {% for tag in post.tags.all %}
+										<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a></td>
+
+								{% endfor %}
+								</tr>
                                 </table>
-                        </td>
                         </tr>
                         </table>
                         <br>
