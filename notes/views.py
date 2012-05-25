@@ -21,6 +21,14 @@ from notes.models import *
 
 def index(request):
     posts = Post.objects.all()
+    paginator = Paginator(posts, 10)
+    try: page = int(request.GET.get("page", 1))
+    except ValueError: page = 1
+
+    try: posts = paginator.page(page)
+    except(InvalidPage, EmptyPage):
+        posts= paginator.page(paginator.num_pages)
+
     #print(posts[0].created.naturaltime())
     print(request.user.username)
     #print(posts[0] not in request.user.likes.all())

@@ -74,33 +74,27 @@
 
     <div class="pagination">
     <ul>
-
 		{% if posts.has_previous %}
-		    <li>
-				  <a href= "?page={{ posts.previous_page_number }}">Prev</a>
-				    
+    <li>
+                  <a href= "?page={{ posts.previous_page_number }}">Prev</a>
+                    
 
-		    </li>
-		 {% else %}<li class="disabled">
-				    <a href= "">Prev</a>
+    </li>
+ {% else %}<li class="disabled">
+                    <a href= "">Prev</a>
 
-		</li>
+</li>
 		{% endif %}
-
-
-
     <li><a>{{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
 		{% if posts.has_next %}
-		    <li>
-				  <a href= "?page={{ posts.next_page_number }}">Next</a>
-				    
+    <li>
+                   
+                    <a href= "?page={{ posts.next_page_number }}">Next</a>
+                    
 
-		    </li>
-		 {% else %}<li class="disabled">
-				    <a href= "">Next</a>
+    </li>
 
-		</li>
-		{% endif %}
+{% endif %}
     </ul>
     </div>
 {% endif %}
