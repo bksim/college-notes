@@ -34,7 +34,7 @@
 							<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
 								<div id="upvote-contents-{{post.pk}}">
 									{% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;
-									{% else %}<font color="red">-&nbsp;</font>{% endif %}
+									{% else %}<font color="red"></font>{% endif %}
 								</div>
 							</a>
 						</td>
