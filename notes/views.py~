@@ -21,7 +21,7 @@ from notes.models import *
 
 def index(request):
     posts = Post.objects.all()
-    paginator = Paginator(posts, 3)
+    paginator = Paginator(posts, 10)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
 
