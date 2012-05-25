@@ -113,7 +113,7 @@
 Trending
 {% for tag in trends %}
 <br>
-<a href="/trending/{{ tag }}">{{tag}}</a>
+<a href="/trending/{{ tag }}">#{{tag}}</a>
 {% endfor %}
 </div>      
 </div>

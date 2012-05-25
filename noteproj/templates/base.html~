@@ -19,28 +19,42 @@
   </head>
 
   <body>
-<ul class="nav nav-list">
+
 
     <!-- The top navigation menu -->
     
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           <a class="brand" href="/">notes</a>
-          <div class="nav-collapse">
+          <div class="nav">
             <ul class="nav">
               <li><a href="/submit/">submit</a></li>
               <li><a href="/new/">new</a></li>
               <li><a href="/best/">best</a></li>
-              {% if not is_authenticated %}<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
-                {% else %}<li class="pull-right"><a href="/logout/">logout</a></li>{% endif %}
+              
             </ul>
-          </div><!--/.nav-collapse -->
+          </div><!--/.nav- -->
+
+	  <div class="nav pull-right">
+		<ul class="nav">
+			{% if is_authenticated %}
+			<li><a href="users/{{ user.user.username }}/">{{ user.user.username }}</a></li>
+			{% endif %}
+
+			<li class="divider-vertical"></li>
+
+
+			{% if not is_authenticated %}
+			<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
+			{% else %}<li class="pull-right"><a href="/logout/">logout</a></li>{% endif %}
+
+
+
+
+
+                </ul>  
+	  </div>
         </div>
       </div>
     </div>
@@ -50,20 +64,9 @@
            
    <!-- End top navigation menu-->
    <div class="container-fluid">
-<div class ="well">
-      {% block content %}{% endblock %}</div>
-      <div class="well">    <li class="nav-header">
-List header
-</li>
-<li class="active">
-<a href="#">Home</a>
-</li>
-<li>
-<a href="#">Library</a>
-</li>
 
-</ul>
-</div>
+      {% block content %}{% endblock %}
+
     </div> <!-- /container -->
     <div class="container">
        
@@ -75,7 +78,7 @@ List header
 
     <!-- Footer -->
 
-
+    
 
   </body>
 

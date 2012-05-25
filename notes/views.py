@@ -160,7 +160,7 @@ def users(request, username):
     #print(likedposts)
     #print(posts[0].created.naturaltime())
     #print(request.user.is_authenticated())
-    return render_to_response("college/users.html",  dict(posts=posts, user=request.user, page_user=username, active='submitted',
+    return render_to_response("college/users.html",  dict(posts=posts, user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], page_user=username, active='submitted',
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
         
         
@@ -252,6 +252,11 @@ def get_trends():
     tag_words = []
     for word in tags:
         tag_words.append( str(word.tag)[1:])
-    return tag_words
+    return tag_words[:20]
+
+
+
+
+
         
     
