@@ -7,8 +7,11 @@
 // this might be messed up sorry but hopefully jquery works for upvoting -bks
 // kind is there in case we ever want to implement downvoting?
 	function upvote(pk, kind) {
-		$.getJSON("/upvote/", { pk:pk, vote: kind }, function(json){
+		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
+		function(json){
 			alert("Was successful?: " + json['success']);
+			$("#ratingDiv").text(String(json['points']) + " points");
+			alert("successful again: " + $("#ratingDiv").text());
 		});
 	}
 	function addClickHandlers() {
@@ -54,7 +57,7 @@
                                 {%endif%}
                                 
                                 
-                                </a> | {{post.rating}} points</small>
+                                </a> | <div id="ratingDiv">{{post.rating}} points</div></small>
                                 
                                 </td></tr>
                                 </table>
