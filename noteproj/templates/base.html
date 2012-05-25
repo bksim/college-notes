@@ -61,7 +61,8 @@
 
 			{% if not is_authenticated %}
 			<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
-			         </ul>  
+			{% endif %}
+		</ul>  
 	  </div>
         </div>
       </div>
