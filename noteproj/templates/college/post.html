@@ -10,8 +10,11 @@
 		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
 		function(json){
 			
+			// updates the div containing the number of points
 			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
 			
+			// updates the div containing the upvote arrow ^ (replacing it with a dash)
+			$("#upvote-contents-" + String(pk)).text("-");
 		});
 	}
 	function addClickHandlers() {
@@ -22,57 +25,56 @@
 </script>
 
 <div class="well">
-                        <table>
-                        <tr>
-                        <td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
-                        
-                                {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
-
-                                <font color="red">^&nbsp;</font>{% endif %} 
-                                
-                                
-                                
-                             </a>
-                        </td>
-                        <td>
-                                <table>
-                                <tr><td>
-                                    <a href="{{post.link}}">{{post.title}}</a>
-                                </td></tr>
-                                <tr><td>
-                                    {{post.description}}
-                                </td></tr>
-                                <tr><td>
-                                <small>by 
-                                <a href="/users/{{post.user}}/">{{post.user}}</a>
-                                
-                                
-                                {{post.created|naturaltime}} | 
-                                <a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
-                                
-                                {% if post.num_comments == 1 %}
-                                Comment
-                                {% else %}
-                                Comments
-                                {%endif%}
-                                
-                                
-                                </a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small> 
-                                
-                                </td></tr>
-								<tr>
-									{% for tag in post.tags.all %}
-
-
-									<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a></td>
-
-									{% endfor %}
-								</tr>
-                                </table>
-                        </tr>
-                        </table>
+	<table>
+		<tr>
+			<td>
+				<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
+					<div id="upvote-contents-{{post.pk}}">
+						{% if post not in user.likes.all or user == 'Anonymous' %}
+							^&nbsp;
+						{% else %}
+							<font color="red">^&nbsp;</font>{% endif %}
+					</div>
+				</a>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<a href="{{post.link}}">{{post.title}}</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{{post.description}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<small>by <a href="/users/{{post.user}}/">{{post.user}}</a> 
+							{{post.created|naturaltime}} | 
+							<a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
+					
+							{% if post.num_comments == 1 %}
+							Comment
+							{% else %}
+							Comments
+							{%endif%}
+							</a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small> 
+						</td>
+					</tr>
+					<tr>
+						{% for tag in post.tags.all %}
+						<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a></td>
+						{% endfor %}
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 </div>                        
-                <hr>
+
+<hr>
 
 {% for comment in comments %}
     <div class="comment">
@@ -90,6 +92,6 @@
     <div id="submit"><input type="submit" value="add comment"></div>
 </form>
 </div>
-      {% endblock %}
+{% endblock %}
 
 
