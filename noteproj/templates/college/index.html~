@@ -20,21 +20,24 @@
 	
 	$(document).ready(addClickHandlers);
 </script>
- 
-<div class="span8">
-                <dl>
-                    {% for post in posts.object_list %}
-                        <table>
-                        <tr>
-                        <td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
+
+<div class="container-fluid">
+	<div class="row-fluid">
+
+		<div class="span8">
+                	<dl>
+                    		{% for post in posts.object_list %}
+                        	<table>
+                        	<tr>
+                        	<td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 
                                 <font color="red">&nbsp;&nbsp;</font>{% endif %} 
 								
-                            </a>
-                        </td>
-                        <td>
+                            	</a>
+                        	</td>
+                        	<td>
                                 <table>
                                 <tr><td>
                                     <a href="{{post.link}}">{{post.title}}</a>
@@ -57,56 +60,66 @@
                                 {%endif%}
                                 
                                 
-                                </a> | <p id="ratingDiv-{{post.pk}}">{{post.rating}} points</p></small>
+                                </a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small>
                                 
                                 </td></tr>
                                 </table>
-                        </td>
-                        </tr>
-                        </table>
-                        <br>
-                    {% endfor %}
-                </dl>
+							</td>
+							</tr>
+							</table>
+							<br>
+						    {% endfor %}
+						</dl>
 
-        <!-- Next/Prev page links  -->
+					<!-- Next/Prev page links  -->
 
-{% if posts.object_list and posts.paginator.num_pages > 1 %}
+				{% if posts.object_list and posts.paginator.num_pages > 1 %}
 
-    <div class="pagination">
-    <ul>
+    				<div class="pagination">
+    				<ul>
 
-		{% if posts.has_previous %}
-		    <li>
-				  <a href= "?page={{ posts.previous_page_number }}">Prev</a>
-				    
+				{% if posts.has_previous %}
+				    <li>
+						  <a href= "?page={{ posts.previous_page_number }}">Prev</a>
+						    
 
-		    </li>
-		 {% else %}<li class="disabled">
-				    <a>Prev</a>
+				    </li>
+				 {% else %}<li class="disabled">
+						    <a>Prev</a>
 
-		</li>
-		{% endif %}
-
-
-
-    <li><a>{{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
-		{% if posts.has_next %}
-		    <li>
-				  <a href= "?page={{ posts.next_page_number }}">Next</a>
-				    
-
-		    </li>
-		 {% else %}<li class="disabled">
-				    <a>Next</a>
-
-		</li>
-		{% endif %}
-    </ul>
-    </div>
-{% endif %}
+				</li>
+				{% endif %}
 
 
-        
+
+				    <li><a>{{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
+						{% if posts.has_next %}
+						    <li>
+								  <a href= "?page={{ posts.next_page_number }}">Next</a>
+								    
+
+						    </li>
+						 {% else %}<li class="disabled">
+								    <a>Next</a>
+
+						</li>
+						{% endif %}
+				    </ul>
+				    </div>
+					{% endif %}
+</div>
+<div class="span4">
+<div class="well sidebar-nav">
+Trending
+{% for tag in trends %}
+<br>
+<a href="/trending/{{ tag }}">{{tag}}</a>
+{% endfor %}
+</div>      
+</div>
+
+
+</div>
 </div>
       {% endblock %}
 

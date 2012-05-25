@@ -36,13 +36,13 @@ def index(request):
         return render_to_response("college/index.html", dict(posts=posts, 
         user='Anonymous', 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()) )
     #print(request.user.username)
     print(   type(User.objects.filter(username=request.user.username)))
     return render_to_response("college/index.html", dict(posts=posts, 
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
 
 def post(request, pk):
     """Single post with comments and a comment form."""
@@ -221,3 +221,37 @@ def new(request):
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+
+def trending(request, tag):
+    posts = Post.objects.filter(tags__tag='#'+tag)
+    paginator = Paginator(posts, 10)
+    try: page = int(request.GET.get("page", 1))
+    except ValueError: page = 1
+
+    try: posts = paginator.page(page)
+    except(InvalidPage, EmptyPage):
+        posts= paginator.page(paginator.num_pages)
+
+    #print(posts[0].created.naturaltime())
+    print(request.user.username)
+    #print(posts[0] not in request.user.likes.all())
+    if request.user.username == '':
+        return render_to_response("college/index.html", dict(posts=posts, 
+        user='Anonymous', 
+        path=request.path,
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()) )
+    #print(request.user.username)
+    print(   type(User.objects.filter(username=request.user.username)))
+    return render_to_response("college/index.html", dict(posts=posts, 
+        user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
+        path=request.path,
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
+
+def get_trends():
+    tags = list(Tag.objects.all())
+    tag_words = []
+    for word in tags:
+        tag_words.append( str(word.tag)[1:])
+    return tag_words
+        
+    
