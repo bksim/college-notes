@@ -224,7 +224,7 @@ def new(request):
 
 def trending(request, tag):
     posts = Post.objects.filter(tags__tag__iexact=tag)
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
 

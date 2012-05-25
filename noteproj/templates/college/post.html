@@ -9,7 +9,6 @@
 	function upvote(pk, kind) {
 		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
 		function(json){
-			
 			// updates the div containing the number of points
 			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
 			
@@ -17,11 +16,11 @@
 			$("#upvote-contents-" + String(pk)).text("-");
 		});
 	}
-	function addClickHandlers() {
+	/*function addClickHandlers() {
 		$("#upvote").click( function() { upvote("up") });
 	}
 	
-	$(document).ready(addClickHandlers);
+	$(document).ready(addClickHandlers);*/
 </script>
 
 <div class="well">
