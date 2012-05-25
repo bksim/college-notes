@@ -21,7 +21,7 @@
 	$(document).ready(addClickHandlers);
 </script>
  
-<div class="well span8">
+<div class="span8">
                 <dl>
                     {% for post in posts.object_list %}
                         <table>
@@ -57,7 +57,7 @@
                                 {%endif%}
                                 
                                 
-                                </a> | <div id="ratingDiv-{{post.pk}}">{{post.rating}} points</div></small>
+                                </a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small>
                                 
                                 </td></tr>
                                 </table>

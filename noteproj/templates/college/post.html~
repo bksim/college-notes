@@ -4,7 +4,7 @@
 <div class="well">
                         <table>
                         <tr>
-                        <td><a id="upvote" href="{% url notes.views.upvote %}">
+                        <td><a id="upvote" href="{% url notes.views.upvote post.pk %}">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 

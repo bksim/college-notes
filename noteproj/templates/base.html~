@@ -7,19 +7,19 @@
         <title>Notes</title>
         
        
-     <link href="static/bootstrap.css" rel="stylesheet">
+     <link href="/static/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-bottom: 40px;
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="static/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/bootstrap-responsive.css" rel="stylesheet">
 
   </head>
 
   <body>
-
+<ul class="nav nav-list">
 
     <!-- The top navigation menu -->
     
@@ -50,9 +50,20 @@
            
    <!-- End top navigation menu-->
    <div class="container-fluid">
+<div class ="well">
+      {% block content %}{% endblock %}</div>
+      <div class="well">    <li class="nav-header">
+List header
+</li>
+<li class="active">
+<a href="#">Home</a>
+</li>
+<li>
+<a href="#">Library</a>
+</li>
 
-      {% block content %}{% endblock %}
-
+</ul>
+</div>
     </div> <!-- /container -->
     <div class="container">
        
@@ -64,7 +75,7 @@
 
     <!-- Footer -->
 
-    
+
 
   </body>
 
