@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+<script>
+// this might be messed up sorry but hopefully jquery works for upvoting -bks
+// kind is there in case we ever want to implement downvoting?
+	function upvote(pk, kind) {
+		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
+		function(json){
+			
+			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
+			
+		});
+	}
+	function addClickHandlers() {
+		$("#upvote").click( function() { upvote("up") });
+	}
+	
+	$(document).ready(addClickHandlers);
+</script>
+
 <div class="well">
                         <table>
                         <tr>
-                        <td><a id="upvote" href="{% url notes.views.upvote %}">
+                        <td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
                         
                                 {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
 
@@ -37,7 +57,7 @@
                                 {%endif%}
                                 
                                 
-                                </a> | {{post.rating}} points</small>
+                                </a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small> 
                                 
                                 </td></tr>
                                 </table>

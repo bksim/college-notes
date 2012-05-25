@@ -104,11 +104,11 @@ def set_tags(post, input):
     for word in strings:
         if word[0] == '#':
             try:
-                tag = Tag.objects.get(tag=word)
+                tag = Tag.objects.get(tag=word[1:])
                 post.tags.add(tag)
                 post.save()
             except:
-                post.tags.create(tag=word)
+                post.tags.create(tag=word[1:])
                 
     
 
@@ -223,7 +223,7 @@ def new(request):
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
 
 def trending(request, tag):
-    posts = Post.objects.filter(tags__tag='#'+tag)
+    posts = Post.objects.filter(tags__tag__iexact=tag)
     paginator = Paginator(posts, 10)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
@@ -251,12 +251,16 @@ def get_trends():
     tags = list(Tag.objects.all())
     tag_words = []
     for word in tags:
-        tag_words.append( str(word.tag)[1:])
+        tag_words.append( str(word.tag))
     return tag_words[:20]
 
+from django import template
 
+register = template.Library()
 
-
+@register.filter
+def tag_fix(value):
+    return value[1:]
 
         
     
