@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta name="HandheldFriendly" content="true" />
         <title>Notes</title>
+		
+		<script src="/static/bootstrap-dropdown.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
         
        
      <link href="/static/bootstrap.css" rel="stylesheet">
@@ -58,13 +61,7 @@
 
 			{% if not is_authenticated %}
 			<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
-			<!--{% else %}<li class="pull-right"><a href="/logout/">logout</a></li>{% endif %}-->
-
-
-
-
-
-                </ul>  
+			         </ul>  
 	  </div>
         </div>
       </div>
