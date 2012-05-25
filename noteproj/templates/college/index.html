@@ -11,7 +11,7 @@
 		function(json){
 			alert("Was successful?: " + json['success']);
 			$("#ratingDiv").text(String(json['points']) + " points");
-			alert("successful again: " + $("#ratingDiv").text());
+			alert("successful again: " + $("#ratingDiv-" + String(pk)).text());
 		});
 	}
 	function addClickHandlers() {
@@ -57,7 +57,7 @@
                                 {%endif%}
                                 
                                 
-                                </a> | <div id="ratingDiv">{{post.rating}} points</div></small>
+                                </a> | <div id="ratingDiv-{{post.pk}}">{{post.rating}} points</div></small>
                                 
                                 </td></tr>
                                 </table>
