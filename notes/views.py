@@ -121,7 +121,7 @@ def log_out(request):
     
     
 def add_comment(request, pk):
-    p = request.GET
+    p = request.POST
     if p.has_key("body") and p["body"]:
         comment = Comment(post=Post.objects.get(pk=pk), author = request.user, body=p["body"])
         comment.save()
