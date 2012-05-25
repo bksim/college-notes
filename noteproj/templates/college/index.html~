@@ -67,7 +67,7 @@
                                    {% for tag in post.tags.all %}
 
 
-					<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">{{ tag.tag }}</span></a>
+					<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a>
 
 {% endfor %}</tr>
 
