@@ -21,7 +21,7 @@ from notes.models import *
 
 def index(request):
     posts = Post.objects.all()
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
 
@@ -175,7 +175,7 @@ def liked(request, username):
 def best(request):
 	# framework is copied from index, so this may be the source of any errors -bks
     posts = Post.objects.order_by('-rating')
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
 
@@ -200,7 +200,7 @@ def best(request):
 def new(request):
 # framework is copied from index, so this may be the source of any errors -bks
     posts = Post.objects.order_by('-created')
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
 

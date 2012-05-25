@@ -30,7 +30,7 @@
 				{% for post in posts.object_list %}
 				<table>
 					<tr>
-						<td>									
+						<td>
 							<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
 								<div id="upvote-contents-{{post.pk}}">
 									{% if post not in user.likes.all or user == 'Anonymous' %}
