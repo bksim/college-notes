@@ -62,10 +62,10 @@ def post(request, pk):
 @login_required(login_url='/accounts/login') 
 def submit(request):
     form = PostForm()
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             print('try')
-            post = request.GET
+            post = request.POST
             if post['title'] == '' or post['description'] == '' or post['link'] == '':
                 return render_to_response('college/submit.html', {
                 'form': form,
