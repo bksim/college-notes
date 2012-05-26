@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta name="HandheldFriendly" content="true" />
         <title>Notes</title>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-transition.js"></script>
+		<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+		<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-button.js"></script>
+
         
        
      <link href="/static/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
-        padding-bottom: 40px;
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-bottom: 0px;
+        padding-top: 45px; /* 45px to make the container go all the way to the bottom of the topbar */
       }
     </style>
     <link href="/static/bootstrap-responsive.css" rel="stylesheet">
+
+{% block jquery %}
+<script>
+// this might be messed up sorry but hopefully jquery works for upvoting -bks
+// kind is there in case we ever want to implement downvoting?
+	function upvote(pk, kind) {
+		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
+		function(json){
+			// updates the div containing the number of points
+			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
+			
+			// updates the div containing the upvote arrow ^ (replacing it with a dash)
+			$("#upvote-contents-" + String(pk)).text("-");
+		});
+	}
+	/*function addClickHandlers() {
+		$("#upvote").click( function() { upvote("up") });
+	}
+	
+	$(document).ready(addClickHandlers);*/
+</script>
+
+{% endblock %}
+
+
+
+
+
 
   </head>
 
@@ -24,11 +58,14 @@
     <!-- The top navigation menu -->
     
     <div class="navbar navbar-fixed-top">
+
       <div class="navbar-inner">
+
         <div class="container">
           <a class="brand" href="/">notes</a>
           <div class="nav">
             <ul class="nav">
+              <li><a class="brand" href="/">notes</a></li>
               <li><a href="/submit/">submit</a></li>
               <li><a href="/new/">new</a></li>
               <li><a href="/best/">best</a></li>
@@ -39,7 +76,18 @@
 	  <div class="nav pull-right">
 		<ul class="nav">
 			{% if is_authenticated %}
-			<li><a href="users/{{ user.user.username }}/">{{ user.user.username }}</a></li>
+			<!--<li><a href="/users/{{ user.user.username }}/">{{ user.user.username }}</a></li>-->
+			<div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              [pic] {{ user.user.username }}
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/users/{{ user.user.username }}/">Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="/logout/">Log Out</a></li>
+            </ul>
+			</div>
 			{% endif %}
 
 			<li class="divider-vertical"></li>
@@ -47,13 +95,8 @@
 
 			{% if not is_authenticated %}
 			<li class="pull-right"><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">login</a></li>
-			{% else %}<li class="pull-right"><a href="/logout/">logout</a></li>{% endif %}
-
-
-
-
-
-                </ul>  
+			{% endif %}
+		</ul>  
 	  </div>
         </div>
       </div>
@@ -70,8 +113,8 @@
     </div> <!-- /container -->
     <div class="container">
        
-            <footer>
-        <p>&copy; AW and Bsim</p>
+      <footer>
+        &copy; AW and Bsim
       </footer>
     </div>
 

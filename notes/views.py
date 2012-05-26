@@ -16,8 +16,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.utils import simplejson
-
 from notes.models import *
+from notes.util import *
 
 def index(request):
     posts = Post.objects.all()
@@ -97,24 +97,7 @@ def submit(request):
             return HttpResponseRedirect(reverse('notes.views.index'))
     return render_to_response('college/submit.html', {
         'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
-   
-def set_tags(post, input):
-    import unicodedata
-    strings = unicodedata.normalize('NFKD', input).encode('ascii','ignore').split()
-    for word in strings:
-        if word[0] == '#':
-            try:
-                tag = Tag.objects.get(tag=word[1:])
-                post.tags.add(tag)
-                post.save()
-            except:
-                post.tags.create(tag=word[1:])
-                
-    
 
-
-
-   
 def log_out(request):
     logout(request)
     return HttpResponseRedirect(reverse('notes.views.index'))
@@ -127,8 +110,7 @@ def add_comment(request, pk):
         comment.save()
     return HttpResponseRedirect(reverse("notes.views.post", args=[pk]))
 
-@login_required(login_url='/accounts/login') 
-# edited this for jquery -bks
+@login_required(login_url='/accounts/login')
 def upvote(request):
     results = {'success':False, 'points': 0} #default json response
 	
@@ -189,13 +171,13 @@ def best(request):
         return render_to_response("college/index.html", dict(posts=posts, 
         user='Anonymous', 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()))
     #print(request.user.username)
     print(   type(User.objects.filter(username=request.user.username)))
     return render_to_response("college/index.html", dict(posts=posts, 
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
 		
 def new(request):
 # framework is copied from index, so this may be the source of any errors -bks
@@ -214,13 +196,13 @@ def new(request):
         return render_to_response("college/index.html", dict(posts=posts, 
         user='Anonymous', 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()))
     #print(request.user.username)
     print(   type(User.objects.filter(username=request.user.username)))
     return render_to_response("college/index.html", dict(posts=posts, 
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated()))
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()))
 
 def trending(request, tag):
     posts = Post.objects.filter(tags__tag__iexact=tag)
@@ -247,20 +229,6 @@ def trending(request, tag):
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
 
-def get_trends():
-    tags = list(Tag.objects.all())
-    tag_words = []
-    for word in tags:
-        tag_words.append( str(word.tag))
-    return tag_words[:20]
-
-from django import template
-
-register = template.Library()
-
-@register.filter
-def tag_fix(value):
-    return value[1:]
 
         
     

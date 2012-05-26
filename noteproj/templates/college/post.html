@@ -3,25 +3,6 @@
 {% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
-<script>
-// this might be messed up sorry but hopefully jquery works for upvoting -bks
-// kind is there in case we ever want to implement downvoting?
-	function upvote(pk, kind) {
-		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
-		function(json){
-			// updates the div containing the number of points
-			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
-			
-			// updates the div containing the upvote arrow ^ (replacing it with a dash)
-			$("#upvote-contents-" + String(pk)).text("-");
-		});
-	}
-	/*function addClickHandlers() {
-		$("#upvote").click( function() { upvote("up") });
-	}
-	
-	$(document).ready(addClickHandlers);*/
-</script>
 
 <div class="well">
 	<table>

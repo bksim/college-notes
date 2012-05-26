@@ -22,6 +22,34 @@
     </style>
     <link href="/static/bootstrap-responsive.css" rel="stylesheet">
 
+{% block jquery %}
+<script>
+// this might be messed up sorry but hopefully jquery works for upvoting -bks
+// kind is there in case we ever want to implement downvoting?
+	function upvote(pk, kind) {
+		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
+		function(json){
+			// updates the div containing the number of points
+			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
+			
+			// updates the div containing the upvote arrow ^ (replacing it with a dash)
+			$("#upvote-contents-" + String(pk)).text("-");
+		});
+	}
+	/*function addClickHandlers() {
+		$("#upvote").click( function() { upvote("up") });
+	}
+	
+	$(document).ready(addClickHandlers);*/
+</script>
+
+{% endblock %}
+
+
+
+
+
+
   </head>
 
   <body>
@@ -30,11 +58,14 @@
     <!-- The top navigation menu -->
     
     <div class="navbar navbar-fixed-top">
+
       <div class="navbar-inner">
+
         <div class="container">
-          <a class="brand" href="/">notes</a>
+          
           <div class="nav">
             <ul class="nav">
+              <li><a class="brand" href="/">notes</a></li>
               <li><a href="/submit/">submit</a></li>
               <li><a href="/new/">new</a></li>
               <li><a href="/best/">best</a></li>

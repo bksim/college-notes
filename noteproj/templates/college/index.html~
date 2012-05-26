@@ -1,97 +1,74 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% block content %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
-<script>
-// this might be messed up sorry but hopefully jquery works for upvoting -bks
-// kind is there in case we ever want to implement downvoting?
-	function upvote(pk, kind) {
-		$.getJSON("/upvote/", { pk:pk, vote: kind }, 
-		function(json){
-			
-			$("#ratingDiv-" + String(pk)).text(String(json['points']) + " points");
-			
-		});
-	}
-	function addClickHandlers() {
-		$("#upvote").click( function() { upvote("up") });
-	}
-	
-	$(document).ready(addClickHandlers);
-</script>
+
 
 <div class="container-fluid">
 	<div class="row-fluid">
-
 		<div class="span9">
-                	<dl>
-                    		{% for post in posts.object_list %}
-                        	<table>
-                        	<tr>
-                        	<td><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
-                        
-                                {% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;{% else %}
-
-                                <font color="red">&nbsp;&nbsp;</font>{% endif %} 
-								
-                            	</a>
-                        	</td>
-                        	<td>
-                                <table>
-                                <tr><td>
-                                    <a href="{{post.link}}">{{post.title}}</a>
-                                </td></tr>
-                                <tr><td>
-                                    {{post.description}}
-                                </td></tr>
-                                <tr><td>
-                                <small>by 
-                                <a href="/users/{{post.user}}/">{{post.user}}</a>
-                                
-                                
-                                {{post.created|naturaltime}} | 
-                                <a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
-                                
-                                {% if post.num_comments == 1 %}
-                                Comment
-                                {% else %}
-                                Comments
-                                {%endif%}
-                                
-                                
-                                </a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small>
-                                
-                                </td></tr>
+			
+				{% for post in posts.object_list %}
+				<table>
 					<tr>
-                                   {% for tag in post.tags.all %}
-
-
-					<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a>
-
-{% endfor %}</tr>
-
-
-
-
-
-
-                                </table>
-							</td>
+						<td>
+							<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
+								<div id="upvote-contents-{{post.pk}}">
+									{% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;
+									{% else %}&nbsp;&nbsp;{% endif %}
+								</div>
+							</a>
+						</td>
+		                                <td>
+						<table>
+							<tr>
+								<td>
+									<a href="{{post.link}}">{{post.title}}</a>
+								</td>
 							</tr>
-							</table>
-							<br>
-						    {% endfor %}
-						</dl>
+							<tr>
+								<td>
+									{{post.description}}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<small>by 
+									<a href="/users/{{post.user}}/">{{post.user}}</a>
 
-					<!-- Next/Prev page links  -->
+									{{post.created|naturaltime}} | 
+									<a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
+								
+									{% if post.num_comments == 1 %}
+									Comment
+									{% else %}
+									Comments
+									{%endif%}
+								
+									</a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small>
+								</td>
+							</tr>
+							<tr>
+								{% for tag in post.tags.all %}
+								<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a></td>
+								{% endfor %}
+							</tr>
+						</table>
+                                                </td>
+					</tr>
+				</table>
+				<br />
+				{% endfor %}
+			
 
-				{% if posts.object_list and posts.paginator.num_pages > 1 %}
+			<!-- Next/Prev page links  -->
 
-    				<div class="pagination">
+			{% if posts.object_list %}
+
+    			<div class="pagination">
     				<ul>
 
-				{% if posts.has_previous %}
+					{% if posts.has_previous %}
 				    <li>
 						  <a href= "?page={{ posts.previous_page_number }}">Prev</a>
 						    
@@ -118,22 +95,19 @@
 						</li>
 						{% endif %}
 				    </ul>
-				    </div>
-					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+		<div class="span3">
+			<br />
+			<div class="well sidebar-nav">
+				Trending:
+				{% for tag in trends %}
+				<br>
+				<a href="/trending/{{ tag }}">#{{tag}}</a>
+				{% endfor %}
+			</div>      
+		</div>
+	</div>
 </div>
-<div class="span3">
-<div class="well sidebar-nav">
-Trending
-{% for tag in trends %}
-<br>
-<a href="/trending/{{ tag }}">#{{tag}}</a>
-{% endfor %}
-</div>      
-</div>
-
-
-</div>
-</div>
-      {% endblock %}
-
-
+{% endblock %}
