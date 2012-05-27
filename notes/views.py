@@ -67,32 +67,32 @@ def post(request, pk):
 def submit(request):
     form = PostForm()
     if request.method == 'POST':
-        try:
-            print('try')
-            post = request.POST
-            if post['title'] == '' or post['description'] == '' or post['link'] == '':
-                return render_to_response('college/submit.html', {
-                'form': form,
-                'error_message': "Make sure all fields are filled out", 'is_authenticated': request.user.is_authenticated()
-                }, context_instance=RequestContext(request))
-            
-            #
-			
-            p = Post(title=post['title'], 
-                description=post['description'], link=post['link'], user=request.user)
-
-            p.trendScore = calc_trend_score(p)
+	try:
+	    print('try')
+	    post = request.POST
+	    if post['title'] == '' or post['description'] == '' or post['link'] == '':
+		return render_to_response('college/submit.html', {
+		'form': form,
+		'error_message': "Make sure all fields are filled out", 'is_authenticated': request.user.is_authenticated()
+		}, context_instance=RequestContext(request))
+	    
+	    #
+	
+	    p = Post(title=post['title'], 
+		description=post['description'], link=post['link'], user=request.user)
             p.save()
-        except:
-            print('except')
-            return render_to_response('college/submit.html', {
-            'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
-        else:
-            print('else')
-            set_tags(p, post['description'])
-            #print(st)
-            
-            return HttpResponseRedirect(reverse('notes.views.index'))
+	    p.trendScore = calc_trend_score(p)
+	    p.save()
+	except:
+	    print('except')
+	    return render_to_response('college/submit.html', {
+	    'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
+	else:
+	    print('else')
+	    set_tags(p, post['description'])
+	    #print(st)
+	    
+	    return HttpResponseRedirect(reverse('notes.views.index'))
     return render_to_response('college/submit.html', {
         'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
 

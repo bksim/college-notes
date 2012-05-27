@@ -1,8 +1,9 @@
-{% extends "main_sidebar.html" %}
+{% extends "base.html" %}
 {% load humanize %}
-{% block main_content %}
+{% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
+{% title %}Post{ % endblock %}
 <div class="well">
 	<table>
 		<tr>
