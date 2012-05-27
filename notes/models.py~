@@ -65,7 +65,7 @@ class CommentForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description', 'link', 'content')
+        fields = ('title', 'description', 'link')
         
 class RegisterForm(ModelForm):
     class Meta:

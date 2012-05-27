@@ -3,7 +3,7 @@
 {% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
-{% title %}Post{ % endblock %}
+{% block title %}Post{% endblock %}
 <div class="well">
 	<table>
 		<tr>
