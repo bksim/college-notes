@@ -18,6 +18,7 @@ from django.contrib.auth import logout
 from django.utils import simplejson
 from notes.models import *
 from notes.util import *
+from django.utils.datastructures import MultiValueDict
 
 def index(request):
     posts = Post.objects.order_by('-trendScore') #orders by trendScore in decreasing order
@@ -70,23 +71,42 @@ def submit(request):
 	try:
 	    print('try')
 	    post = request.POST
-	    if post['title'] == '' or post['description'] == '' or post['link'] == '' or post['content'] == '':
+	    if post['title'] == '' or post['description'] == '':
 		return render_to_response('college/submit.html', {
 		'form': form,
-		'error_message': "Make sure all fields are filled out", 'is_authenticated': request.user.is_authenticated()
+		'error_message': "Make sure title and description fields are filled out", 'is_authenticated': request.user.is_authenticated()
 		}, context_instance=RequestContext(request))
 	    
 	    #
-	    print(post['content'])
-	    p = Post(title=post['title'], 
-		description=post['description'], link=post['link'], user=request.user, content=post['content'])
-            p.save()
+            print(request.FILES)
+            empty_MVD = MultiValueDict()
+	    print('1')
+
+            if request.FILES == empty_MVD and post['link'] != '': #no content , yes link
+                p = Post(title=post['title'], 
+		description=post['description'], link=post['link'], user=request.user)
+                p.save()
+            elif post['link'] != '' and request.FILES != empty_MVD: #yes content, and yes link
+                p = Post(title=post['title'], 
+		description=post['description'], link=post['link'], user=request.user, content = request.FILES['content'])
+                p.save()
+            elif request.FILES == empty_MVD and post['link'] == '': #no content, no link
+	        p = Post(title=post['title'], 
+	 	description=post['description'],user=request.user)
+                p.save()
+                p.link = '/posts/' + str(p.pk) +'/'
+            elif request.FILES != empty_MVD and post['link'] == '': # yes content, no link
+	        p = Post(title=post['title'], 
+		description=post['description'],user=request.user, content = request.FILES['content'])
+                p.save()
+                p.link = '/posts/' + p.pk +'/'
+
 	    p.trendScore = calc_trend_score(p)
 	    p.save()
 	except:
 	    print('except')
 	    return render_to_response('college/submit.html', {
-	    'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
+	    'form': form, 'is_authenticated': request.user.is_authenticated(), 'error_message': "There was an error"}, context_instance=RequestContext(request))
 	else:
 	    print('else')
 	    set_tags(p, post['description'])

@@ -4,7 +4,7 @@
 <div class="well span6">
        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         
-                <form action="/submit/" method="post">{% csrf_token %}
+                <form enctype="multipart/form-data" action="/submit/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>

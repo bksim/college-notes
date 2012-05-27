@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django.forms import ModelForm
 from django.db.models.signals import post_save
+from datetime import datetime
 # Create your models here.
 
     
@@ -17,8 +18,11 @@ class Tag(models.Model):
         return self.tag  
 
 class Post(models.Model):
+
+    def content_file_name(instance, filename):
+        return '/'.join(['content', instance.user.username, filename + str(datetime.now())])
     title = models.CharField(max_length=60, blank=True,null=True)
-    content = models.FileField(upload_to="content/")
+    content = models.FileField(upload_to=content_file_name)
     description = models.TextField()
     link = models.URLField()
     tags = models.ManyToManyField(Tag, blank=True)

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django.forms import ModelForm
 from django.db.models.signals import post_save
+from notes.util import content_file_name
 # Create your models here.
 
     
@@ -18,7 +19,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=60, blank=True,null=True)
-    content = models.FileField(upload_to="content/")
+    content = models.FileField(upload_to=content_file_name)
     description = models.TextField()
     link = models.URLField()
     tags = models.ManyToManyField(Tag, blank=True)
@@ -65,7 +66,7 @@ class CommentForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'description', 'link')
+        fields = ('title', 'description', 'link', 'content')
         
 class RegisterForm(ModelForm):
     class Meta:
