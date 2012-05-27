@@ -25,10 +25,10 @@ def get_trends():
     return tag_words[:20]
 	
 def calc_trend_score(p):
-	time_standard = datetime(2012,1,1) #january 1, 2012
-	d = p.created - time_standard
-	t_s = d.seconds + d.days * 86400 #seconds elapsed
-	return int(math.log(p.rating+1,2) + (t_s/43200.0)) #rating = log(base 2) of (points+1) + (time of submit - january 1, 2012) / (12 hrs)
+    time_standard = datetime(2012,1,1) #january 1, 2012
+    d = p.created - time_standard
+    t_s = d.seconds + d.days * 86400 #seconds elapsed
+    return int(math.log(p.rating+1,2) + (t_s/43200.0)) #rating = log(base 2) of (points+1) + (time of submit - january 1, 2012) / (12 hrs)
 
 
 

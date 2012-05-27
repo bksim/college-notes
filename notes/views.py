@@ -20,7 +20,7 @@ from notes.models import *
 from notes.util import *
 
 def index(request):
-	posts = Post.objects.order_by('-trendScore') #orders by trendScore in decreasing order
+    posts = Post.objects.order_by('-trendScore') #orders by trendScore in decreasing order
     paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
@@ -80,8 +80,8 @@ def submit(request):
 			
             p = Post(title=post['title'], 
                 description=post['description'], link=post['link'], user=request.user)
-            
-			p.trendScore = calc_trend_score(p)
+
+            p.trendScore = calc_trend_score(p)
             p.save()
         except:
             print('except')
@@ -122,7 +122,7 @@ def upvote(request):
                 user = UserProfile.objects.get_or_create(user=request.user)[0]
                 if p not in user.likes.all():
                     p.rating += 1
-					p.trendScore = calc_trend_score(p) #update trendscore
+                    p.trendScore = calc_trend_score(p) #update trendscore
                 else:
                     print('already voted')
                 p.save()
