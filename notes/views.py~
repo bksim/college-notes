@@ -77,7 +77,7 @@ def submit(request):
 		}, context_instance=RequestContext(request))
 	    
 	    #
-	
+	    print(post['content'])
 	    p = Post(title=post['title'], 
 		description=post['description'], link=post['link'], user=request.user, content=post['content'])
             p.save()

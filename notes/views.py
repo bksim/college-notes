@@ -70,16 +70,19 @@ def submit(request):
 	try:
 	    print('try')
 	    post = request.POST
-	    if post['title'] == '' or post['description'] == '' or post['link'] == '' or post['content'] == '':
+	    if post['title'] == '' or post['description'] == '' or post['link'] == '':
 		return render_to_response('college/submit.html', {
 		'form': form,
 		'error_message': "Make sure all fields are filled out", 'is_authenticated': request.user.is_authenticated()
 		}, context_instance=RequestContext(request))
 	    
 	    #
+            upload = ''
+            if post['content'] != '':
+                upload = 'content/' + post['content']
 	    print(post['content'])
 	    p = Post(title=post['title'], 
-		description=post['description'], link=post['link'], user=request.user, content=post['content'])
+		description=post['description'], link=post['link'], user=request.user, content=upload)
             p.save()
 	    p.trendScore = calc_trend_score(p)
 	    p.save()
