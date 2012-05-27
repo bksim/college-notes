@@ -70,7 +70,7 @@ def submit(request):
 	try:
 	    print('try')
 	    post = request.POST
-	    if post['title'] == '' or post['description'] == '' or post['link'] == '':
+	    if post['title'] == '' or post['description'] == '' or post['link'] == '' or post['content'] == '':
 		return render_to_response('college/submit.html', {
 		'form': form,
 		'error_message': "Make sure all fields are filled out", 'is_authenticated': request.user.is_authenticated()
@@ -204,7 +204,7 @@ def new(request):
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()))
 
 def trending(request, tag):
-    posts = Post.objects.filter(tags__tag__iexact=tag)
+    posts = Post.objects.filter(tags__tag__iexact=tag).order_by('-trendScore')
     paginator = Paginator(posts, 8)
     try: page = int(request.GET.get("page", 1))
     except ValueError: page = 1
