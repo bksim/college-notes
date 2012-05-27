@@ -26,12 +26,11 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
     user = models.ForeignKey(User,null=True, blank=True)
-    
+    trendScore = models.IntegerField(default=0) #field for frontpage score
     
     def __unicode__(self):
         return self.title
-    
-    
+      
     def num_comments(self):
         return Comment.objects.filter(post=self).count()
         
