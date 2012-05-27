@@ -67,7 +67,7 @@ def post(request, pk):
 def submit(request):
     form = PostForm()
     if request.method == 'POST':
-	if True:
+	try:
 	    print('try')
 	    post = request.POST
 	    if post['title'] == '' or post['description'] == '' or post['link'] == '':
@@ -79,11 +79,11 @@ def submit(request):
 	    #
 	
 	    p = Post(title=post['title'], 
-		description=post['description'], link=post['link'], user=request.user)
+		description=post['description'], link=post['link'], user=request.user, content=post['content'])
             p.save()
 	    p.trendScore = calc_trend_score(p)
 	    p.save()
-	elif False:
+	except:
 	    print('except')
 	    return render_to_response('college/submit.html', {
 	    'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
