@@ -62,10 +62,9 @@
       <div class="navbar-inner">
 
         <div class="container">
-          
+          <a class="brand" href="/">notes</a>
           <div class="nav">
             <ul class="nav">
-              <li><a class="brand" href="/">notes</a></li>
               <li><a href="/submit/">submit</a></li>
               <li><a href="/new/">new</a></li>
               <li><a href="/best/">best</a></li>
@@ -79,11 +78,11 @@
 			<!--<li><a href="/users/{{ user.user.username }}/">{{ user.user.username }}</a></li>-->
 			<div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              [pic] {{ user.user.username }}
+               {{ user.user.username }}
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="/users/{{ user.user.username }}/">Profile</a></li>
+              <li><a href="/users/{{ user.user.username }}/">Dashboard</a></li>
               <li class="divider"></li>
               <li><a href="/logout/">Log Out</a></li>
             </ul>
@@ -106,11 +105,54 @@
                 
            
    <!-- End top navigation menu-->
-   <div class="container-fluid">
+   
 
-      {% block content %}{% endblock %}
+      
+<div class="container-fluid">
+<br>
+	<div class="row-fluid">
+		<div class="span9">
+  
+                {% block main %}{% endblock %}
 
-    </div> <!-- /container -->
+				
+		</div>
+		<div class="span3">
+			<br />
+			<div class="well sidebar-nav">{% block sidebar1 %}
+                                {% if user != 'Anonymous' %}
+				<b>My Files</b>
+                                <br>
+                                {% for item in user_posts %}
+                                <div><a href="/posts/{{ item.content }}">{{item.filename}}</a></div>
+                                {% endfor %}
+                                
+                                {% else %}<h3><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">Login or Register</a></h3>
+                                {% endif %}            
+
+
+{% endblock %}
+                        </div>
+                       <div class="well sidebar-nav">{% block sidebar2 %}
+				<b>Trending</b>
+				{% for tag in trends %}
+				<br>
+				<a href="/trending/{{ tag }}">#{{tag}}</a>
+				{% endfor %}
+
+
+
+{% endblock %}
+				
+
+                                
+			</div>      
+		</div>
+	</div>
+</div>
+
+
+    <!-- /container -->
     <div class="container">
        
       <footer>

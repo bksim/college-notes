@@ -1,17 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Submit | Notes{% endblock %}
-{% block content %}
+
 {% block main %}
 <div class="well span6">
        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         
-                <form enctype="multipart/form-data" action="/submit/" method="post">{% csrf_token %}
+                <form action="/accounts/register/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
 </div>
 {% endblock %}
 
+{% block sidebar1 %}{% endblock %}
+{% block sidebar1 %}{% endblock %}
 
 
 

@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.forms import ModelForm
 from django.db.models.signals import post_save
 from datetime import datetime
+import os
 # Create your models here.
 
     
@@ -20,7 +21,7 @@ class Tag(models.Model):
 class Post(models.Model):
 
     def content_file_name(instance, filename):
-        return '/'.join(['content', instance.user.username, filename + str(datetime.now())])
+        return '/'.join(['content', instance.user.username, filename])
     title = models.CharField(max_length=60, blank=True,null=True)
     content = models.FileField(upload_to=content_file_name)
     description = models.TextField()
@@ -37,6 +38,10 @@ class Post(models.Model):
       
     def num_comments(self):
         return Comment.objects.filter(post=self).count()
+
+    def filename(self):
+        return os.path.basename(self.content.name)
+
         
 class UserProfile(models.Model):
     # This field is required.

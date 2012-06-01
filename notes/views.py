@@ -40,10 +40,11 @@ def index(request):
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends()) )
     #print(request.user.username)
     print(   type(User.objects.filter(username=request.user.username)))
+    user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
     return render_to_response("college/index.html", dict(posts=posts, 
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
         path=request.path,
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = user_posts)) 
 
 def post(request, pk):
     """Single post with comments and a comment form."""
@@ -52,13 +53,14 @@ def post(request, pk):
     #print(comments)
 
     d = dict(post=post, comments=comments, form=CommentForm(), user=request.user, is_authenticated=request.user.is_authenticated())
-  
+    
     if request.user.username == '':
         d = dict(post=post, comments=comments, form=CommentForm(), user='Anonymous', is_authenticated=request.user.is_authenticated())
     else:
+        user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
         d = dict(post=post, comments=comments, form=CommentForm(), 
         user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0],
-        is_authenticated=request.user.is_authenticated())
+        is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = user_posts)
          
         
     d.update(csrf(request))
@@ -106,15 +108,16 @@ def submit(request):
 	except:
 	    print('except')
 	    return render_to_response('college/submit.html', {
-	    'form': form, 'is_authenticated': request.user.is_authenticated(), 'error_message': "There was an error"}, context_instance=RequestContext(request))
+	    'form': form, 'is_authenticated': request.user.is_authenticated(), 'error_message': "There was an error", 'user':UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 'trends': get_trends(), 'user_posts' : user_posts}, context_instance=RequestContext(request))
 	else:
 	    print('else')
 	    set_tags(p, post['description'])
 	    #print(st)
 	    
 	    return HttpResponseRedirect(reverse('notes.views.index'))
+    user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
     return render_to_response('college/submit.html', {
-        'form': form, 'is_authenticated': request.user.is_authenticated()}, context_instance=RequestContext(request))
+        'form': form, 'is_authenticated': request.user.is_authenticated(), 'user':UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 'trends': get_trends(), 'user_posts' : user_posts}, context_instance=RequestContext(request))
 
 def log_out(request):
     logout(request)
@@ -123,8 +126,15 @@ def log_out(request):
     
 def add_comment(request, pk):
     p = request.POST
+
+    try:
+        author = UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0]
+    except:
+        author = UserProfile.objects.get_or_create(user=User.objects.get(username='Anonymous'))[0]
+
+
     if p.has_key("body") and p["body"]:
-        comment = Comment(post=Post.objects.get(pk=pk), author = request.user, body=p["body"])
+        comment = Comment(post=Post.objects.get(pk=pk), author=author.user, body=p["body"])
         comment.save()
     return HttpResponseRedirect(reverse("notes.views.post", args=[pk]))
 
@@ -161,14 +171,27 @@ def users(request, username):
     #print(likedposts)
     #print(posts[0].created.naturaltime())
     #print(request.user.is_authenticated())
-    return render_to_response("college/users.html",  dict(posts=posts, user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], page_user=username, active='submitted',
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
+    if request.user.username != '':
+        user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
+        return render_to_response("college/users.html",  dict(posts=posts, user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], page_user=username, active='submitted',
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = user_posts)) 
+        
+    else:
+        user_posts = []
+        return render_to_response("college/users.html",  dict(posts=posts, user='Anonymous', page_user=username, active='submitted',
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = {})) 
         
         
 def liked(request, username):
     posts = UserProfile.objects.get_or_create(user=User.objects.filter(username=username))[0].likes.all()
-    return render_to_response("college/users.html",  dict(posts=posts, user=request.user, page_user = username, active='liked',
-        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated())) 
+    if request.user.username != '':
+        user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
+        return render_to_response("college/users.html",  dict(posts=posts, user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], page_user = username, active='liked',
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = user_posts))
+    else:
+        return render_to_response("college/users.html",  dict(posts=posts, user='Anonymous', page_user = username, active='liked',
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts ={}))
+
 
 		
 #the method below may be wrong so feel free to edit if it doesn't work -bks
@@ -248,6 +271,22 @@ def trending(request, tag):
         path=request.path,
         media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends())) 
 
+@login_required(login_url='/accounts/login')
+def files(request):
+    files = Post.objects.filter(user=User.objects.filter(username=request.user.username))
+    paginator = Paginator(files, 20)
+    try: page = int(request.GET.get("page", 1))
+    except ValueError: page = 1
 
+    try: files = paginator.page(page)
+    except(InvalidPage, EmptyPage):
+        files= paginator.page(paginator.num_pages)
+
+    print(type(files))
+    user_posts = Post.objects.filter(user=request.user).order_by('-created')[:10]
+    return render_to_response("college/myfiles.html", dict(files=files, 
+        user=UserProfile.objects.get_or_create(user=User.objects.get(username=request.user.username))[0], 
+        path=request.path,
+        media_url=MEDIA_URL, is_authenticated=request.user.is_authenticated(), trends = get_trends(), user_posts = user_posts)) 
         
     

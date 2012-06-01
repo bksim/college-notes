@@ -2,67 +2,60 @@
 {% load humanize %}
 {% block title %}
 Notes | Index{% endblock %}
-{% block content %}
 
 
 
-<div class="container-fluid">
-<br>
-	<div class="row-fluid">
-		<div class="span9">
-			
+
+{% block main %}
+{% if user != 'Anonymous' %}
+                    <ul class="nav nav-pills">
+  <li class="active">
+    <a href="#">Feed</a>
+  </li>
+  <li><a href="/users/{{ user.user.username }}">Dashboard</a></li>
+  <li><a href="/myfiles">My Files</a></li>
+{% endif %}
+</ul>
+			<table class="table table-striped">
+				<tbody>
+                                {% if not posts.object_list  %}<p><em>There doesn't seem to be anything here.</em></p>{% else %}
 				{% for post in posts.object_list %}
-				<table>
-					<tr>
-						<td>
-							<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
-								<div id="upvote-contents-{{post.pk}}">
-									{% if post not in user.likes.all or user == 'Anonymous' %}^&nbsp;
-									{% else %}&nbsp;&nbsp;{% endif %}
-								</div>
-							</a>
-						</td>
-		                                <td>
-						<table>
-							<tr>
-								<td>
-									<a href="{{post.link}}">{{post.title}}</a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									{{post.description}}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<small>by 
-									<a href="/users/{{post.user}}/">{{post.user}}</a>
+				<tr>
+				    <td style="width:25px; vertical-align:middle">
+                                        <span><a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');"><span id="upvote-contents-{{post.pk}}">
+									{% if post not in user.likes.all or user == 'Anonymous' %}&#9650;
+									{% else %}&nbsp;{% endif %}
+								</span>
+							</a></span>
+                                    </td>
+						
+		                               
+				    <td><a href="{{post.link}}">{{post.title}}</a>
 
-									{{post.created|naturaltime}} | 
-									<a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
-								
-									{% if post.num_comments == 1 %}
-									Comment
-									{% else %}
-									Comments
-									{%endif%}
-								
-									</a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></small>
-								</td>
-							</tr>
-							<tr>
-								{% for tag in post.tags.all %}
-								<td class="pull-left"><a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a></td>
-								{% endfor %}
-							</tr>
-						</table>
-                                                </td>
-					</tr>
-				</table>
-				<br />
-				{% endfor %}
+					 <div>{{post.description}}</div>
+					<div>by 
+					<a href="/users/{{post.user}}/">{{post.user}}</a>
+
+					{{post.created|naturaltime}} | 
+					<a href="{% url notes.views.post post.pk %}">{{post.num_comments}} 
 			
+					{% if post.num_comments == 1 %}
+					Comment
+					{% else %}
+					Comments
+					{%endif%}
+								
+					</a> | <span id="ratingDiv-{{post.pk}}">{{post.rating}} points</span></div>
+					
+                                        {% if not post.tags.all %}{% else %}
+                                        <div>{% for tag in post.tags.all %}
+					<a href="/trending/{{ tag.tag }}"><span class="label label-info">#{{ tag.tag }}</span></a>
+					{% endfor %}</div>{% endif %}
+				   </td>
+		                </tr>
+                     		
+				{% endfor %}{% endif %}
+			        </tbody></table>
 
 			<!-- Next/Prev page links  -->
 
@@ -100,17 +93,6 @@ Notes | Index{% endblock %}
 				    </ul>
 				</div>
 			{% endif %}
-		</div>
-		<div class="span3">
-			<br />
-			<div class="well sidebar-nav">
-				Trending:
-				{% for tag in trends %}
-				<br>
-				<a href="/trending/{{ tag }}">#{{tag}}</a>
-				{% endfor %}
-			</div>      
-		</div>
-	</div>
-</div>
-{% endblock %}
+{% endblock %}	
+                 
+	

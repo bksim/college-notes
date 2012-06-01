@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Notes | My Files{% endblock %}
+
+
+                
+{% block main %}
+{% if user != 'Anonymous' %}
+                    <ul class="nav nav-pills">
+  <li>
+    <a News Feed</a>
+  </li>
+  <li><a href="/users/{{ user.user.username }}">Dashboard</a></li>
+  <li class="active"><a href="#">My Files</a></li>
+{% endif %}
+<br>
+<span class="pull-right"><a href="{% url notes.views.submit %}"><button class="btn">Upload</button></a></span>
+<br>
+			<table class="table table-striped">
+				<tbody>
+				{% for file in files.object_list %}
+                                {% if file.content %}
+				<tr>
+	                              <td>
+                                        <a href="/posts/{{ file.content }}"><button class="btn btn-primary">{{file.filename}}</button></a>
+                                       </td>
+	                              <td>
+	                              <td>
+                                        <a href="/posts/{{ file.pk }}">View Post</a>
+                                       </td>
+	                              <td>
+                                        {{file.title}}
+                                       </td>
+                                      <td>{{file.created}}
+                                      </td>
+                                
+		                </tr>
+                     		{% endif %}
+				{% endfor %}
+			        </tbody>
+                        </table>
+
+			<!-- Next/Prev page links  -->
+
+			{% if files.object_list %}
+
+    			<div class="pagination">
+    				<ul>
+
+					{% if files.has_previous %}
+				    <li>
+						  <a href= "?page={{ files.previous_page_number }}">Prev</a>
+						    
+
+				    </li>
+				 {% else %}<li class="disabled">
+						    <a>Prev</a>
+
+				</li>
+				{% endif %}
+
+
+
+				    <li><a>{{ files.number }} of {{ files.paginator.num_pages }}</a></li>
+						{% if files.has_next %}
+						    <li>
+								  <a href= "?page={{ files.next_page_number }}">Next</a>
+								    
+
+						    </li>
+						 {% else %}<li class="disabled">
+								    <a>Next</a>
+
+						</li>
+						{% endif %}
+				    </ul>
+				</div>
+			{% endif %}
+
+{% endblock %}
+
+
+

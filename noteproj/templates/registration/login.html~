@@ -28,6 +28,6 @@
 <h2><a href="/accounts/register">Don't have an account? Register here</a></h2>
 </div>
 {% endblock %}
-{% block sidebar1 %}{% endblock %}
-{% block sidebar2 %}{% endblock %}
+
+
 

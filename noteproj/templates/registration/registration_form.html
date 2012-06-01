@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block main %}
 <div class="well span6">
        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         
@@ -10,6 +10,9 @@
 </form>
 </div>
 {% endblock %}
+
+{% block sidebar1 %}{% endblock %}
+{% block sidebar2 %}{% endblock %}
 
 
 
