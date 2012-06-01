@@ -39,7 +39,7 @@
 					
 					{% if post.content %}
 					
-							<div><a href="/{{post.content}}"><button class="btn btn-primary">View/Download {{post.filename}}</button></a></div>
+							<div><a href="https://s3.amazonaws.com/collegenotes/{{post.content}}"><button class="btn btn-primary">View/Download {{post.filename}}</button></a></div>
 			
                                         {% endif %}<div>
 						{% for tag in post.tags.all %}

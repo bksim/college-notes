@@ -127,7 +127,7 @@
                                 <div><a href="/posts/{{ item.content }}">{{item.filename}}</a></div>
                                 {% endfor %}
                                 
-                                {% else %}<a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">Login or Register</a></li>
+                                {% else %}<h3><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">Login or Register</a></h3>
                                 {% endif %}            
 
 

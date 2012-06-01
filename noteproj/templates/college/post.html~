@@ -8,7 +8,7 @@
 
 	<table class="table table-striped">
 		<tr>
-			<td>
+			<td style="width:25px; vertical-align:middle">
 				<a href="#" id="upvote" onclick="upvote('{{post.pk}}', 'up');">
 					<div id="upvote-contents-{{post.pk}}">
 						{% if post not in user.likes.all or user == 'Anonymous' %}

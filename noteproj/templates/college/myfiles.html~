@@ -8,7 +8,7 @@
 {% if user != 'Anonymous' %}
                     <ul class="nav nav-pills">
   <li>
-    <a News Feed</a>
+    <a href="/">Feed</a>
   </li>
   <li><a href="/users/{{ user.user.username }}">Dashboard</a></li>
   <li class="active"><a href="#">My Files</a></li>

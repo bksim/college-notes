@@ -124,7 +124,7 @@
 				<b>My Files</b>
                                 <br>
                                 {% for item in user_posts %}
-                                <div><a href="/posts/{{ item.content }}">{{item.filename}}</a></div>
+                                <div><a href="https://s3.amazonaws.com/collegenotes/{{ item.content }}">{{item.filename}}</a></div>
                                 {% endfor %}
                                 
                                 {% else %}<h3><a href="{% url django.contrib.auth.views.login %}?next=/{{request.path}}">Login or Register</a></h3>
