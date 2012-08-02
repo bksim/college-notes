@@ -1,4 +1,5 @@
 .py*
+.txt~
 venv
 settings.py
 data
