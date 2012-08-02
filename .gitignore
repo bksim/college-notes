@@ -1,0 +1,4 @@
+.py*
+venv
+settings.py
+data
